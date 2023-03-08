@@ -1,0 +1,50 @@
+{
+  "name": "antidote/laravel-form",
+  "description": "Provides functionality to add a front end form using Filament",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tim Smith",
+      "email": "tim.smith@titan21.co.uk"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Antidote\\LaravelForm\\": "packages/form/src/",
+      "Antidote\\LaravelForm\\Database\\Factories\\" : "packages/form/database/factories/",
+      "Antidote\\LaravelFormFilament\\": "packages/filament/src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4" : {
+      "Antidote\\LaravelForm\\Tests\\" : "tests/"
+    }
+  },
+  "require-dev": {
+    "orchestra/testbench": "^7.21",
+    "pestphp/pest": "^1.22",
+    "pestphp/pest-plugin-laravel": "^1.4",
+    "pestphp/pest-plugin-livewire": "^1.0",
+    "laravel/framework": "^9.50",
+    "laravel/sail": "^1.19"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "require": {
+    "filament/filament": "^2.17",
+    "livewire/livewire": "^2.11"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Antidote\\LaravelForm\\ServiceProvider",
+        "Antidote\\LaravelForm\\EventServiceProvider",
+        "Antidote\\LaravelFormFilament\\ServiceProvider"
+      ]
+    }
+  }
+}
