@@ -20,7 +20,7 @@ class EnquiryMail extends \Illuminate\Mail\Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('info@titan21.co.uk', 'Tim Smith'),
+            from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
             subject: 'Enquiry sent via the \''.$this->enquiry->form->name.'\' form'
         );
     }
