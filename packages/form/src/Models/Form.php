@@ -35,7 +35,7 @@ class Form extends Model
 
     public function fields()
     {
-        return $this->hasMany(Field::class);
+        return $this->hasMany(Field::class)->orderBy('order', 'ASC');
     }
 
     public function enquiries()

@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\AssociateAction;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
@@ -63,13 +64,19 @@ class FieldsRelationManager extends RelationManager
         return $table
             ->columns([
                 TextColumn::make('name'),
-                TextColumn::make('field_type')
+                TextColumn::make('field_type'),
+                TextColumn::make('order')
             ])
             ->actions([
-                EditAction::make('edit')
+                EditAction::make('edit'),
+                Action::make('move up')
+                    ->action(fn($record) => $record->moveOrderUp()),
+                Action::make('move down')
+                    ->action(fn($record) => $record->moveorderDown())
             ])
             ->headerActions([
                 CreateAction::make('associate')
-            ]);
+            ])
+            ->defaultSort('order');
     }
 }

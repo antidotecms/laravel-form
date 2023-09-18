@@ -8,12 +8,20 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
-class Field extends Model
+class Field extends Model implements Sortable
 {
     use HasFactory;
+    use SortableTrait;
 
     public static $modelsShouldPreventAccessingMissingAttributes = true;
+
+    public $sortable = [
+        'order_column_name' => 'order',
+        'sort_when_creating' => true
+    ];
 
     protected static function newFactory()
     {
@@ -24,7 +32,8 @@ class Field extends Model
         'name',
         'field_type',
         'field_attributes',
-        'form_id'
+        'form_id',
+        'order'
     ];
 
     public function fieldType() : Attribute
