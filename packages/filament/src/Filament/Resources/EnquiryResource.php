@@ -7,6 +7,8 @@ use Antidote\LaravelForm\Models\Field;
 Use Antidote\LaravelFormFilament\Filament\Resources\EnquiryResource\Pages;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Psy\Util\Str;
 
@@ -73,6 +75,10 @@ class EnquiryResource extends \Filament\Resources\Resource
                     }),
                 TextColumn::make('created_at')
                     ->date('j M Y H:i')
+            ])
+            ->actions([
+                EditAction::make('Edit'),
+                DeleteAction::make('Delete'),
             ]);
     }
 
