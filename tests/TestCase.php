@@ -10,6 +10,7 @@ use Filament\FilamentServiceProvider;
 use Filament\Forms\FormsServiceProvider;
 use Filament\Notifications\NotificationsServiceProvider;
 use Filament\Support\SupportServiceProvider;
+use Filament\Tables\TablesServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\LivewireServiceProvider;
 
@@ -25,6 +26,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             EventServiceProvider::class,
             FormsServiceProvider::class,
             FilamentServiceProvider::class,
+            TablesServiceProvider::class,
             SupportServiceProvider::class,
             NotificationsServiceProvider::class,
             \Antidote\LaravelFormFilament\ServiceProvider::class,

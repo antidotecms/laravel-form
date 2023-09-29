@@ -10,6 +10,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
@@ -43,7 +44,11 @@ class FieldsRelationManager extends RelationManager
                     ->tabs([
                         Tabs\Tab::make('Common')
                             ->schema(
+                                array_merge(
+                                    [Toggle::make('is_display_field')
+                                    ->default(false)],
                                 Field::getCommonOptions()
+                                )
                             ),
                         Tabs\Tab::make('specific')
                             ->visible(fn($get) => count($get('field_type')::getFieldOptions()))

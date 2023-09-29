@@ -4,6 +4,7 @@ namespace Antidote\LaravelForm\Models;
 
 use Antidote\LaravelForm\Database\Factories\FieldFactory;
 //use Antidote\LaravelForm\Models\Concerns\CommonAttributes;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +34,8 @@ class Field extends Model implements Sortable
         'field_type',
         'field_attributes',
         'form_id',
-        'order'
+        'order',
+        'is_display_field'
     ];
 
     public function fieldType() : Attribute
@@ -70,6 +72,11 @@ class Field extends Model implements Sortable
     public function form()
     {
         $this->belongsTo(Form::class);
+    }
+
+    public function scopeDisplayed(Builder $query)
+    {
+        return $query->where('is_display_field', true);
     }
 
     public function getAttribute($key)

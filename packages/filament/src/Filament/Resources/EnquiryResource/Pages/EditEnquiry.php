@@ -17,4 +17,13 @@ class EditEnquiry extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data = (object) $data['submitted_data'];
+        $this->record->data = $data;
+        $this->record->save();
+
+        return [];
+    }
 }
