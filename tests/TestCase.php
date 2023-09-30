@@ -13,6 +13,7 @@ use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\LivewireServiceProvider;
+use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -30,6 +31,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             SupportServiceProvider::class,
             NotificationsServiceProvider::class,
             \Antidote\LaravelFormFilament\ServiceProvider::class,
+            BladeCaptureDirectiveServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
             BladeIconsServiceProvider::class
         ];
