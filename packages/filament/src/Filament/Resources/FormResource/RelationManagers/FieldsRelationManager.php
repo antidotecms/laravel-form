@@ -37,6 +37,7 @@ class FieldsRelationManager extends RelationManager
                 Select::make('field_type')
                     ->options($fields)
                     ->reactive()
+                    ->required()
                     ->afterStateUpdated(fn($livewire) => $livewire->mount()),
                 Tabs::make('options')
                     ->visible(fn($get) => $get('field_type'))
