@@ -33,6 +33,21 @@ class FieldsRelationManager extends RelationManager
             ->columns(2)
             ->schema([
                 TextInput::make('name')
+                    ->unique(callback: function($livewire) {
+                        return function($attribute, $value, $fail) use ($livewire) {
+
+                            $existing_names = $livewire->ownerRecord->fields
+                                ->pluck('name')
+                                ->map(fn($item) => Str::of($item)->lower()->snake())
+                                ->toArray();
+
+                            $converted_name = Str::of($value)->lower()->snake();
+
+                            if(in_array($converted_name,$existing_names)) {
+                                $fail('The name must be unique in this form');
+                            }
+                        };
+                    })
                     ->required(),
                 Select::make('field_type')
                     ->options($fields)
