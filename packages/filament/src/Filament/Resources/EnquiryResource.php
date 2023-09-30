@@ -24,26 +24,18 @@ class EnquiryResource extends \Filament\Resources\Resource
     {
         return $form
             ->schema(function($record) {
+
                 $record->load('form.fields');
-                //dump($record);
+
                 $fields = [];
-                foreach($record->form->fields as $field) {
+
+                foreach($record->form->fields(true)->get() as $field) {
+
                     $fieldType = $field->field_type;
-                    //dump($field->name);
-                    $f = $fieldType::getField($field);
-                    //dump($f);
+
                     $fields[] = $fieldType::getField($field)
-                        //->statePath('data.'.$field->name)
-                        //->model($record)
-                        //->dehydrated(false)
-                        //->statePath('data.'.$field->name)
-                        //->tap(fn($record) => dump($record->data))
-                        ->afterStateHydrated(fn($component, $record) => $component->state($record->data->{$field->name}));
-//                        ->beforeStateDehydrated(function($record) use ($field) {
-//                            dd($record);
-//                            $record->data->{$field->name};
-//                            $record->save();
-//                        });
+                        ->afterStateHydrated(fn($component, $record) => $component->state($record->data->{$field->name}))
+                        ->helperText(fn($record) => !$field->deleted_at ? '' : 'This field has been deleted from the form' );
                 }
                 return $fields;
             });

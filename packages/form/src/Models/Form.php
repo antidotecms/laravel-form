@@ -33,9 +33,13 @@ class Form extends Model
         'bcc' => 'array'
     ];
 
-    public function fields()
+    public function fields(bool $withTrashed = false)
     {
-        return $this->hasMany(Field::class)->orderBy('order', 'ASC');
+        return $this->hasMany(Field::class)
+            ->when($withTrashed, function($query) {
+                return $query->withTrashed();
+            })
+            ->orderBy('order', 'ASC');
     }
 
     public function enquiries()
