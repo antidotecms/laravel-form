@@ -11,6 +11,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
@@ -19,12 +20,22 @@ use Filament\Tables\Actions\AssociateAction;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Unique;
 
 class FieldsRelationManager extends RelationManager
 {
     protected static string $relationship = 'fields';
+
+    protected static ?string $title = 'Fields';
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Form $form): Form
     {
@@ -93,10 +104,29 @@ class FieldsRelationManager extends RelationManager
                 Action::make('move up')
                     ->action(fn($record) => $record->moveOrderUp()),
                 Action::make('move down')
-                    ->action(fn($record) => $record->moveorderDown())
+                    ->action(fn($record) => $record->moveorderDown()),
+                DeleteAction::make('delete'),
+                //@todo potential issue with force deleting and restore in relation managers
+//                ForceDeleteAction::make('force_delete')
+//                    ->before(function() {
+//                        Notification::make()
+//                            ->title('Data for this field will be deleted')
+//                            ->body('Permanately deleting this field will remove all data related to it. '.
+//                                'If the field is no lobger used but you wish to look at historical data, leave this as trashed.'.
+//                                'Are you sure you wish to delete the field?')
+//                            ->actions([
+//                                \Filament\Notifications\Actions\Action::make('Yes'),
+//                                \Filament\Notifications\Actions\Action::make('No')
+//                            ])
+//                            ->send();
+//                    }),
+//                RestoreAction::make('restore')
             ])
             ->headerActions([
                 CreateAction::make('associate')
+            ])
+            ->filters([
+                TrashedFilter::make('trashed')
             ])
             ->defaultSort('order');
     }
