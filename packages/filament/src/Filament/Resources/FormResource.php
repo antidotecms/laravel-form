@@ -25,7 +25,7 @@ class FormResource extends Resource
 
     protected static ?string $navigationGroup = 'Forms';
 
-    public static function form(FilamentForm $form): FilamentForm
+    public static function form(Forms\Form$form): Forms\Form
     {
         //@todo find method to include name with email address - maybe use a repeater?
         return $form
@@ -115,7 +115,7 @@ class FormResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([

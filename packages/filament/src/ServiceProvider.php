@@ -9,15 +9,11 @@ use Filament\PluginServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Symfony\Component\Finder\SplFileInfo;
 
-class ServiceProvider extends PluginServiceProvider
+class ServiceProvider extends PackageServiceProvider
 {
-    protected array $resources = [
-        FormResource::class,
-        EnquiryResource::class
-    ];
-
     public function configurePackage(Package $package): void
     {
         //@todo do we need to publiush transactions in order to use those already written for Filament?

@@ -2,15 +2,15 @@
 
 namespace Antidote\LaravelFormFilament\Filament\Resources\FormResource\RelationManagers;
 
-use Filament\Resources\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class EnquiriesRelationManager extends \Filament\Resources\RelationManagers\RelationManager
 {
     protected static string $relationship = 'enquiries';
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([

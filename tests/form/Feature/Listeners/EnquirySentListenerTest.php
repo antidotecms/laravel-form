@@ -15,7 +15,8 @@ it('will send out a notification', function() {
 
     $enquiry = Enquiry::factory()->fromForm($form)->withData('name', 'Tim Smith')->create();
 
-    Event::dispatch(new \Antidote\LaravelForm\Events\EnquirySentEvent($form, $enquiry));
+    //Event::dispatch(new \Antidote\LaravelForm\Events\EnquirySentEvent($form, $enquiry));
+    \Antidote\LaravelForm\Events\EnquirySentEvent::dispatch($form, $enquiry);
 
     Notification::assertSentOnDemand(EnquiryEmailNotification::class, function(EnquiryEmailNotification $notification, $channels, AnonymousNotifiable $notifiable) use ($form)  {
         expect($notifiable->routes['mail'])->toBe($form->to);

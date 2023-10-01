@@ -20,6 +20,8 @@ class Form extends Component implements HasForms
 
     public $form_id;
 
+    public $fields;
+
     public $submitted_data = [];
 
     public function mount(int $form_id)
@@ -37,7 +39,18 @@ class Form extends Component implements HasForms
         }
     }
 
-    protected function getFormSchema(): array
+//    protected function getFormSchema(): array
+//    {
+//        $fields = [];
+//
+//        foreach($this->fields as $field) {
+//            $fields[] = $field->field_type::getFilamentField($field);
+//        }
+//
+//        return $fields;
+//    }
+
+    public function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         $fields = [];
 
@@ -50,7 +63,7 @@ class Form extends Component implements HasForms
                 ->extraInputAttributes(['class' => 'alf field '.$form_class.' '.$field_class]);
         }
 
-        return $fields;
+        return $form->schema($fields);
     }
 
     public function submit()

@@ -5,11 +5,29 @@ use Antidote\LaravelFormFilament\Filament\Resources\FormResource\Pages\CreateFor
 
 it('can create a form', function() {
 
-    $form = Form::factory()->withRecipient('to', 'Tim Smith', 'test@test.com')->make();
+    $form = Form::factory()
+        ->withRecipient('to', 'Tim Smith', 'test@test.com')
+        ->make();
+
+    $repeater_key = null;
 
     \Pest\Livewire\livewire(CreateForm::class)
-        ->fillForm($form->attributesToArray()
-        )
+        /**
+         * @todo we need ot add the follwing "taps" since if `assertHasNoFormErrors` is not passed any keys, it will check against the uuid and since
+         * we do not normally have to pass in a key when filling the form, validation fails
+         */
+        ->tap(function($livewire) use (&$repeater_key) {
+            $repeater_key = collect(array_keys($livewire->data['to']))->first();
+        })
+        ->tap(function() use ($form, $repeater_key) {
+            $form->to = [
+                $repeater_key => [
+                    'name' => 'Tim Smith',
+                    'email' => 'test@test.com'
+                ]
+            ];
+        })
+        ->fillForm($form->attributesToArray())
         ->call('create')
         ->assertHasNoFormErrors();
 
@@ -34,22 +52,46 @@ it('will validate to recipients', function () {
         ->make();
 
     \Pest\Livewire\livewire(CreateForm::class)
+//        ->tap(function($livewire) use (&$repeater_key) {
+//            $repeater_key = collect(array_keys($livewire->data['to']))->first();
+//        })
+//        ->tap(function() use ($form, $repeater_key) {
+//            $form->to = [
+//                $repeater_key => [
+//                    'name' => '',
+//                    'email' => ''
+//                ]
+//            ];
+//        })
         ->fillForm($form->attributesToArray())
         ->call('create')
         ->assertHasFormErrors([
-            'to.0.name' => 'required',
-            'to.0.email' => 'required'
+//            "to.{$repeater_key}.name" => 'required',
+//            "to.{$repeater_key}.email" => 'required',
+            "to.0.name" => 'required',
+            "to.0.email" => 'required'
         ]);
 
     $form = Form::factory()
-        ->withRecipient('to', 'Tim Smith', 'invalid email address')
+        //->withRecipient('to', 'Tim Smith', 'invalid email address')
         ->make();
 
     \Pest\Livewire\livewire(CreateForm::class)
+        ->tap(function($livewire) use (&$repeater_key) {
+            $repeater_key = collect(array_keys($livewire->data['to']))->first();
+        })
+        ->tap(function() use ($form, $repeater_key) {
+            $form->to = [
+                $repeater_key => [
+                    'name' => 'Tim Smith',
+                    'email' => 'invalid email address'
+                ]
+            ];
+        })
         ->fillForm($form->attributesToArray())
         ->call('create')
         ->assertHasFormErrors([
-            'to.0.email' => 'email'
+            "to.{$repeater_key}.email" => 'email'
         ]);
 
     $form = Form::factory()
@@ -57,11 +99,22 @@ it('will validate to recipients', function () {
         ->make();
 
     \Pest\Livewire\livewire(CreateForm::class)
+        ->tap(function($livewire) use (&$repeater_key) {
+            $repeater_key = collect(array_keys($livewire->data['to']))->first();
+        })
+        ->tap(function() use ($form, $repeater_key) {
+            $form->to = [
+                $repeater_key => [
+                    'name' => 'Tim Smith',
+                    'email' => 'test@test.com'
+                ]
+            ];
+        })
         ->fillForm($form->attributesToArray())
         ->call('create')
         ->assertHasNoFormErrors([
-            'to.0.name',
-            'to.0.email'
+            "to.{$repeater_key}.name",
+            "to.{$repeater_key}.email"
         ]);
 });
 
@@ -75,8 +128,8 @@ it('will validate a cc recipient', function () {
         ->fillForm($form->attributesToArray())
         ->call('create')
         ->assertHasFormErrors([
-            'cc.0.name' => 'required',
-            'cc.0.email' => 'required'
+            "cc.0.name" => 'required',
+            "cc.0.email" => 'required'
         ]);
 
     $form = Form::factory()
