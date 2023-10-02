@@ -19,17 +19,12 @@ class Field extends Model implements Sortable
     use SortableTrait;
     use SoftDeletes;
 
-    public static $modelsShouldPreventAccessingMissingAttributes = true;
+    protected static $modelsShouldPreventAccessingMissingAttributes = true;
 
     public $sortable = [
         'order_column_name' => 'order',
         'sort_when_creating' => true
     ];
-
-    protected static function newFactory()
-    {
-        return new FieldFactory();
-    }
 
     protected $fillable = [
         'name',
@@ -39,6 +34,19 @@ class Field extends Model implements Sortable
         'order',
         'is_display_field'
     ];
+
+    protected $casts = [
+        'field_attributes' => 'array'
+    ];
+
+    protected $dates = [
+        'deleted_at'
+    ];
+
+    protected static function newFactory()
+    {
+        return new FieldFactory();
+    }
 
     public function fieldType() : Attribute
     {
@@ -66,10 +74,6 @@ class Field extends Model implements Sortable
             get: fn($value) => Str::headline($value)
         );
     }
-
-    protected $casts = [
-        'field_attributes' => 'array'
-    ];
 
     public function form()
     {

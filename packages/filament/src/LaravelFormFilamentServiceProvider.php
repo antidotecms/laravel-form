@@ -12,7 +12,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Symfony\Component\Finder\SplFileInfo;
 
-class ServiceProvider extends PackageServiceProvider
+class LaravelFormFilamentServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {

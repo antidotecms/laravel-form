@@ -42,9 +42,9 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Antidote\\LaravelForm\\ServiceProvider",
-        "Antidote\\LaravelForm\\EventServiceProvider",
-        "Antidote\\LaravelFormFilament\\ServiceProvider"
+        "Antidote\\LaravelForm\\LaravelFormServiceProvider",
+        "Antidote\\LaravelForm\\LaravelFormEventServiceProvider",
+        "Antidote\\LaravelFormFilament\\LaravelFormFilamentServiceProvider"
       ]
     }
   }

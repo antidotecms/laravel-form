@@ -9,6 +9,11 @@ use Filament\Panel;
 
 class LaravelFormPlugin implements Plugin
 {
+    public static function make(): static
+    {
+        return app(static::class);
+    }
+
     public function getId(): string
     {
         return 'laravel-form';

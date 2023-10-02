@@ -13,6 +13,9 @@ beforeEach(function() {
             'is_display_field' => true
         ]);
 
+    //@todo why do I need this??
+    $this->name_field->restore();
+
     $this->enquiry = \Antidote\LaravelForm\Models\Enquiry::factory()
         ->fromForm($this->form)
         ->withData($this->name_field->name, 'a name')
@@ -55,10 +58,17 @@ it('will allow a field to have a name that exists in another form', function () 
 
 it('will soft delete a field', function () {
 
+//    dump($this->name_field->attributesToArray());
+//    dump($this->name_field->restore());
+//    //$this->name_field->refresh();
+//    dump($this->name_field->trashed());
+//    dump($this->name_field->attributesToArray());
+
     \Pest\Livewire\livewire(\Antidote\LaravelFormFilament\Filament\Resources\FormResource\RelationManagers\FieldsRelationManager::class, [
-        'ownerRecord' => $this->form
+        'ownerRecord' => $this->form,
+        'pageClass' => \Antidote\LaravelFormFilament\Filament\Resources\FormResource\Pages\EditForm::class
     ])
-    ->callTableAction('delete', $this->name_field)
+    ->callTableAction(\Filament\Tables\Actions\DeleteAction::class, $this->name_field)
     ->assertHasNoErrors();
 
     expect(\Antidote\LaravelForm\Models\Field::count())->toBe(0);
@@ -70,7 +80,8 @@ it('will filter deleted fields', function () {
     //@toso is there a way to do this more fluently? I.e in a full chain of method calls?
     
     \Pest\Livewire\livewire(\Antidote\LaravelFormFilament\Filament\Resources\FormResource\RelationManagers\FieldsRelationManager::class, [
-        'ownerRecord' => $this->form
+        'ownerRecord' => $this->form,
+        'pageClass' => \Antidote\LaravelFormFilament\Filament\Resources\FormResource\Pages\EditForm::class
     ])
     ->assertCanSeeTableRecords(collect([$this->name_field]));
 
@@ -78,7 +89,8 @@ it('will filter deleted fields', function () {
     $this->name_field->refresh();
 
     \Pest\Livewire\livewire(\Antidote\LaravelFormFilament\Filament\Resources\FormResource\RelationManagers\FieldsRelationManager::class, [
-        'ownerRecord' => $this->form
+        'ownerRecord' => $this->form,
+        'pageClass' => \Antidote\LaravelFormFilament\Filament\Resources\FormResource\Pages\EditForm::class
     ])
     ->assertCanNotSeeTableRecords(collect([$this->name_field]))
     ->filterTable('trashed')

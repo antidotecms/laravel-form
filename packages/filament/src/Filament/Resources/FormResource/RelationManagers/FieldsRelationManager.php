@@ -37,18 +37,20 @@ class FieldsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         $fields = app()->make('fieldRegistry');
         return $form
             ->columns(2)
             ->schema([
                 TextInput::make('name')
-                    ->unique(callback: function($livewire) {
-                        return function($attribute, $value, $fail) use ($livewire) {
+                    ->unique(ignoreRecord:true, modifyRuleUsing: function($livewire, $record) {
+                        return function($attribute, $value, $fail) use ($livewire, $record) {
 
+                            $current_name = $record ? $record->name : '';
                             $existing_names = $livewire->ownerRecord->fields
                                 ->pluck('name')
+                                ->reject(fn($item) => $item == $current_name)
                                 ->map(fn($item) => Str::of($item)->lower()->snake())
                                 ->toArray();
 
@@ -91,7 +93,7 @@ class FieldsRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([
@@ -107,7 +109,7 @@ class FieldsRelationManager extends RelationManager
                     ->action(fn($record) => $record->moveorderDown()),
                 DeleteAction::make('delete'),
                 //@todo potential issue with force deleting and restore in relation managers
-//                ForceDeleteAction::make('force_delete')
+                ForceDeleteAction::make('force_delete'),
 //                    ->before(function() {
 //                        Notification::make()
 //                            ->title('Data for this field will be deleted')
@@ -120,7 +122,7 @@ class FieldsRelationManager extends RelationManager
 //                            ])
 //                            ->send();
 //                    }),
-//                RestoreAction::make('restore')
+                RestoreAction::make('restore')
             ])
             ->headerActions([
                 CreateAction::make('associate')

@@ -5,8 +5,8 @@ namespace Antidote\LaravelFormFilament\Filament\Resources;
 use Antidote\LaravelForm\Models\Enquiry;
 use Antidote\LaravelForm\Models\Field;
 Use Antidote\LaravelFormFilament\Filament\Resources\EnquiryResource\Pages;
-use Filament\Resources\Form;
-use Filament\Resources\Table;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -16,7 +16,7 @@ class EnquiryResource extends \Filament\Resources\Resource
 {
     protected static ?string $model = Enquiry::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Forms';
 

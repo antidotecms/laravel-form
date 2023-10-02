@@ -54,8 +54,8 @@ class Form extends Component implements HasForms
     {
         $fields = [];
 
-        $form = \Antidote\LaravelForm\Models\Form::find($this->form_id);
-        $form_class = Str::of($form->name)->lower()->snake('-')->value();
+        $form_model = \Antidote\LaravelForm\Models\Form::find($this->form_id);
+        $form_class = Str::of($form_model->name)->lower()->snake('-')->value();
 
         foreach($this->fields as $field) {
             $field_class = Str::of($field->name)->lower()->snake('-');

@@ -6,7 +6,7 @@ use Antidote\LaravelForm\Http\Livewire\Form;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Livewire;
 
-class ServiceProvider extends \Illuminate\Support\ServiceProvider
+class LaravelFormServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     public function boot()
     {
@@ -15,6 +15,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         Livewire::component('laravel-form::form', Form::class);
 
-        Model::shouldBeStrict();
+        //Model::shouldBeStrict();
     }
 }
